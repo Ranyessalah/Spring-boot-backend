@@ -26,4 +26,9 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     RoleEmployee role;
+
+    // Association N Employee -> 1 Agence (Côté propriétaire)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agence_id")
+    Agence agence;
 }

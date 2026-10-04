@@ -21,8 +21,13 @@ public class Maintenance {
     @Column(nullable = false)
     LocalDate dateDebut;
 
-    LocalDate dateFin; // Peut être null si la maintenance est en cours
+    LocalDate dateFin;
 
     @Column(length = 255)
     String description;
+
+    // Association N Maintenance -> 1 Vehicle
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicle_id")
+    Vehicle vehicle;
 }

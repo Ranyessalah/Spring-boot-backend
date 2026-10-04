@@ -1,8 +1,10 @@
 package tn.esprit.rany_essalah_4cce10.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import java.util.List;
 
 @Entity
 @Table(name = "agence")
@@ -28,4 +30,14 @@ public class Agence {
 
     @Column(nullable = false, length = 20)
     String telephone;
+
+    // Association 1 Agence -> N Vehicle
+    @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
+    @JsonIgnore
+    List<Vehicle> vehicles;
+
+    // Association 1 Agence -> N Employee
+    @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
+    @JsonIgnore
+    List<Employee> employees;
 }

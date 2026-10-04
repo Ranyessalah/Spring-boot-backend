@@ -1,8 +1,10 @@
 package tn.esprit.rany_essalah_4cce10.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import java.util.List;
 
 @Entity
 @Table(name = "equipement")
@@ -19,4 +21,9 @@ public class Equipement {
 
     @Column(nullable = false, length = 100)
     String libelle;
+
+    // Association N Equipement <-> N Vehicle (Côté inverse)
+    @ManyToMany(mappedBy = "equipements", fetch = FetchType.LAZY)
+    @JsonIgnore
+    List<Vehicle> vehicles;
 }

@@ -1,8 +1,11 @@
 package tn.esprit.rany_essalah_4cce10.domain;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "vehicle")
@@ -36,4 +39,28 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     StatutVehicle statut;
+
+    // Association N Vehicle -> 1 Agence (Côté propriétaire)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agence_id")
+    Agence agence;
+
+    // Association N Vehicle <-> N Equipement (Côté propriétaire)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "vehicle_equipement",
+            joinColumns = @JoinColumn(name = "vehicle_id"),
+            inverseJoinColumns = @JoinColumn(name = "equipement_id")
+    )
+    List<Equipement> equipements;
+
+    // Association 1 Vehicle -> N Reservation
+    @OneToMany(mappedBy = "vehicle", fetch = FetchType.LAZY)
+    @JsonIgnore
+    List<Reservation> reservations;
+
+    // Association 1 Vehicle -> N Maintenance
+    @OneToMany(mappedBy = "vehicle", fetch = FetchType.LAZY)
+    @JsonIgnore
+    List<Maintenance> maintenances;
 }

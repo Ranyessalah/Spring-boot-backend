@@ -1,9 +1,11 @@
 package tn.esprit.rany_essalah_4cce10.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "client")
@@ -35,4 +37,9 @@ public class Client {
 
     @Column(nullable = false)
     LocalDate dateInscription;
+
+    // Association 1 Client -> N Reservation (Côté inverse)
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    @JsonIgnore
+    List<Reservation> reservations;
 }
