@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,12 +32,14 @@ public class Contrat {
     boolean valide;
 
     // Association 1 Contrat -> 1 Reservation (Côté propriétaire)
+    // Pas de cascade ici : c'est Reservation qui porte la cascade ALL
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id", unique = true)
     Reservation reservation;
 
-    // Association 1 Contrat -> N Paiement (Cascade ALL)
-    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // Association 1 Contrat -> N Paiement
+    // Cascade ALL + orphanRemoval : un paiement n'existe pas sans son contrat
+    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnore
-    List<Paiement> paiements;
+    List<Paiement> paiements = new ArrayList<>();
 }

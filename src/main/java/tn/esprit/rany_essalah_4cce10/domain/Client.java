@@ -38,8 +38,9 @@ public class Client {
     @Column(nullable = false)
     LocalDate dateInscription;
 
-    // Association 1 Client -> N Reservation (Côté inverse)
-    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    // Association 1 Client -> N Reservation
+    // Cascade PERSIST : sauvegarder un client sauvegarde ses nouvelles réservations
+    @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonIgnore
     List<Reservation> reservations;
 }

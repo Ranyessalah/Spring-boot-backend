@@ -28,17 +28,18 @@ public class Reservation {
     @Column(nullable = false, length = 20)
     StatutReservation statut;
 
-    // Association N Reservation -> 1 Client
+    // Association N Reservation -> 1 Client (Côté propriétaire)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     Client client;
 
-    // Association N Reservation -> 1 Vehicle
+    // Association N Reservation -> 1 Vehicle (Côté propriétaire)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicle_id")
     Vehicle vehicle;
 
-    // Association 1 Reservation -> 1 Contrat (Côté inverse)
+    // Association 1 Reservation -> 1 Contrat
+    // Cascade ALL : supprimer une réservation supprime son contrat
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Contrat contrat;
 }

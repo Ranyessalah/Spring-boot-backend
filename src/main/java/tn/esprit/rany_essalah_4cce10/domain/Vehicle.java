@@ -60,7 +60,8 @@ public class Vehicle {
     List<Reservation> reservations;
 
     // Association 1 Vehicle -> N Maintenance
-    @OneToMany(mappedBy = "vehicle", fetch = FetchType.LAZY)
+    // Cascade PERSIST : sauvegarder un véhicule sauvegarde ses nouvelles maintenances
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonIgnore
     List<Maintenance> maintenances;
 }

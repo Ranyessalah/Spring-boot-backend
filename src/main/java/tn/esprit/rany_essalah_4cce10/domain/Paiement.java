@@ -29,7 +29,7 @@ public class Paiement {
     @Column(nullable = false, length = 20)
     ModePaiement modePaiement;
 
-    // Association N Paiement -> 1 Contrat
+    // Côté propriétaire : LAZY obligatoire
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contrat_id")
     Contrat contrat;
