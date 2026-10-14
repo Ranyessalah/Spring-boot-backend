@@ -1,5 +1,6 @@
 package tn.esprit.rany_essalah_4cce10.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -28,18 +29,15 @@ public class Reservation {
     @Column(nullable = false, length = 20)
     StatutReservation statut;
 
-    // Association N Reservation -> 1 Client (Côté propriétaire)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     Client client;
 
-    // Association N Reservation -> 1 Vehicle (Côté propriétaire)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicle_id")
     Vehicle vehicle;
 
-    // Association 1 Reservation -> 1 Contrat
-    // Cascade ALL : supprimer une réservation supprime son contrat
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     Contrat contrat;
 }

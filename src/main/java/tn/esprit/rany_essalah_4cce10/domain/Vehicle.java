@@ -40,12 +40,10 @@ public class Vehicle {
     @Column(nullable = false, length = 20)
     StatutVehicle statut;
 
-    // Association N Vehicle -> 1 Agence (Côté propriétaire)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agence_id")
     Agence agence;
 
-    // Association N Vehicle <-> N Equipement (Côté propriétaire)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "vehicle_equipement",
@@ -54,13 +52,10 @@ public class Vehicle {
     )
     List<Equipement> equipements;
 
-    // Association 1 Vehicle -> N Reservation
     @OneToMany(mappedBy = "vehicle", fetch = FetchType.LAZY)
     @JsonIgnore
     List<Reservation> reservations;
 
-    // Association 1 Vehicle -> N Maintenance
-    // Cascade PERSIST : sauvegarder un véhicule sauvegarde ses nouvelles maintenances
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonIgnore
     List<Maintenance> maintenances;

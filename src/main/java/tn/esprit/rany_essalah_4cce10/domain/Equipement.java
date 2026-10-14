@@ -22,7 +22,6 @@ public class Equipement {
     @Column(nullable = false, length = 100)
     String libelle;
 
-    // Association N Equipement <-> N Vehicle (Côté inverse)
     @ManyToMany(mappedBy = "equipements", fetch = FetchType.LAZY)
     @JsonIgnore
     List<Vehicle> vehicles;

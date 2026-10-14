@@ -1,5 +1,6 @@
 package tn.esprit.rany_essalah_4cce10.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -29,8 +30,8 @@ public class Paiement {
     @Column(nullable = false, length = 20)
     ModePaiement modePaiement;
 
-    // Côté propriétaire : LAZY obligatoire
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contrat_id")
+    @JsonBackReference("contrat-paiements")
     Contrat contrat;
 }

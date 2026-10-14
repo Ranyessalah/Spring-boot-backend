@@ -1,6 +1,6 @@
 package tn.esprit.rany_essalah_4cce10.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -31,15 +31,11 @@ public class Contrat {
     @Column(nullable = false)
     boolean valide;
 
-    // Association 1 Contrat -> 1 Reservation (Côté propriétaire)
-    // Pas de cascade ici : c'est Reservation qui porte la cascade ALL
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id", unique = true)
     Reservation reservation;
 
-    // Association 1 Contrat -> N Paiement
-    // Cascade ALL + orphanRemoval : un paiement n'existe pas sans son contrat
     @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonManagedReference("contrat-paiements")
     List<Paiement> paiements = new ArrayList<>();
 }

@@ -31,12 +31,10 @@ public class Agence {
     @Column(nullable = false, length = 20)
     String telephone;
 
-    // Association 1 Agence -> N Vehicle
     @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
     @JsonIgnore
     List<Vehicle> vehicles;
 
-    // Association 1 Agence -> N Employee
     @OneToMany(mappedBy = "agence", fetch = FetchType.LAZY)
     @JsonIgnore
     List<Employee> employees;
