@@ -2,7 +2,9 @@ package tn.esprit.rany_essalah_4cce10.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.rany_essalah_4cce10.domain.Contrat;
+import tn.esprit.rany_essalah_4cce10.domain.Paiement;
 import tn.esprit.rany_essalah_4cce10.exception.ResourceNotFoundException;
 import tn.esprit.rany_essalah_4cce10.repository.IContratRepository;
 
@@ -53,4 +55,35 @@ public class ContratServiceImpl implements IContratService {
         }
         contratRepository.deleteById(id);
     }
+
+    @Override
+    @Transactional // Indispensable pour que la cascade fonctionne
+    public Contrat addWithPayments(Contrat contrat) {
+        // 1. Vérification de base
+        if (contrat.getIdContrat() != null) {
+            throw new IllegalArgumentException("Un nouveau contrat ne doit pas avoir d'identifiant");
+        }
+        if (contrat.getMontantTotal() == null || contrat.getMontantTotal().compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Le montant total ne peut pas être négatif");
+        }
+
+        // 2. On lie chaque paiement au contrat parent
+        // C'est ce qui permet à la cascade de fonctionner (le parent gère ses enfants)
+        if (contrat.getPaiements() != null && !contrat.getPaiements().isEmpty()) {
+            for (Paiement paiement : contrat.getPaiements()) {
+                if (paiement.getIdPaiement() != null) {
+                    throw new IllegalArgumentException("Un nouveau paiement ne doit pas avoir d'identifiant");
+                }
+                if (paiement.getMontant() == null || paiement.getMontant().compareTo(BigDecimal.ZERO) < 0) {
+                    throw new IllegalArgumentException("Le montant du paiement ne peut pas être négatif");
+                }
+                // On établit le lien bidirectionnel
+                paiement.setContrat(contrat);
+            }
+        }
+
+        // 3. On sauvegarde le contrat (et ses paiements par cascade)
+        return contratRepository.save(contrat);
+    }
+
 }

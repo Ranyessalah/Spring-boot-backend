@@ -41,4 +41,11 @@ public class ContratController {
     public void deleteById(@PathVariable Long id) {
         contratService.deleteById(id);
     }
+
+    @PostMapping("/with-payments")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Contrat addWithPayments(@RequestBody Contrat contrat) {
+        return contratService.addWithPayments(contrat);
+    }
+
 }

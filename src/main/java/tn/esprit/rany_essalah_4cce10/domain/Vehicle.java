@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -50,13 +51,13 @@ public class Vehicle {
             joinColumns = @JoinColumn(name = "vehicle_id"),
             inverseJoinColumns = @JoinColumn(name = "equipement_id")
     )
-    List<Equipement> equipements;
+    List<Equipement> equipements = new ArrayList<>(); // <-- INITIALISATION OBLIGATOIRE
 
     @OneToMany(mappedBy = "vehicle", fetch = FetchType.LAZY)
     @JsonIgnore
-    List<Reservation> reservations;
+    List<Reservation> reservations = new ArrayList<>(); // <-- INITIALISATION RECOMMANDÉE
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonIgnore
-    List<Maintenance> maintenances;
+    List<Maintenance> maintenances = new ArrayList<>(); // <-- INITIALISATION RECOMMANDÉE
 }
